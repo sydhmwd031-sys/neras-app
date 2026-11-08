@@ -7,9 +7,9 @@ on:
 
 jobs:
   apk:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Use the latest app page
         run: |
           python3 - <<'PY'
@@ -19,11 +19,12 @@ jobs:
           s=s.replace('<script>if("serviceWorker"','<script>if(false&&"serviceWorker"')
           open('android/app/src/main/assets/index.html','w').write(s)
           PY
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
-      - uses: android-actions/setup-android@v3
+      - name: Android SDK (preinstalled on the runner)
+        run: echo "sdk.dir=$ANDROID_HOME" > android/local.properties && ls $ANDROID_HOME/platforms
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
