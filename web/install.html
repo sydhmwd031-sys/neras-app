@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>تثبيت نراس على الآيفون</title>
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Marcellus&display=swap">
+<style>
+:root{--bg:#FBF8F2;--ink:#123F3C;--muted:#5E6E6A;--teal:#23807B;--gold:#C8962E;--gold-soft:#F7ECD3;--line:#E7DDCA;--blue:#0A84FF;--hl:#FF8A00}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Almarai,"IBM Plex Sans Arabic",Tahoma,sans-serif;line-height:1.7}
+.wrap{max-width:980px;margin:0 auto;padding:28px max(16px,env(safe-area-inset-right,0px)) 48px max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:28px}
+header{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
+header img{width:84px;height:84px;border-radius:20px}
+header .wm{font-family:Marcellus,serif;color:var(--gold);font-size:22px}
+header h1{margin:0;font-size:28px}
+header p{margin:0;color:var(--muted)}
+.link{display:inline-block;direction:ltr;background:#fff;border:2px dashed var(--gold);border-radius:12px;padding:8px 14px;font-family:monospace;font-size:15px;user-select:all}
+.steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:22px}
+.step{background:#fff;border:1px solid var(--line);border-radius:24px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:14px}
+.num{width:42px;height:42px;border-radius:50%;background:var(--teal);color:#fff;display:grid;place-items:center;font-weight:800;font-size:20px}
+.step h2{margin:0;font-size:20px;text-align:center}
+.step p{margin:0;color:var(--muted);font-size:15px;text-align:center;max-width:30ch}
+/* phone */
+.phone{width:230px;height:470px;border-radius:40px;background:#1c1c1e;padding:9px;position:relative;flex:none;box-shadow:0 10px 30px rgb(0 0 0 / .15)}
+.scr{width:100%;height:100%;border-radius:32px;overflow:hidden;position:relative;background:#f2f2f7;display:flex;flex-direction:column;font-family:-apple-system,"SF Pro","Segoe UI",Almarai,sans-serif}
+.island{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:74px;height:20px;border-radius:12px;background:#000;z-index:3}
+.status{height:38px;flex:none}
+.page{flex:1;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:10px}
+.page img{width:62px}
+.page b{font-size:15px}
+.page small{font-size:10px;color:var(--muted)}
+.bar{flex:none;background:#f7f7f9;border-top:1px solid #ddd;padding:6px 10px 18px;display:flex;flex-direction:column;gap:6px}
+.url{background:#e4e4ea;border-radius:10px;height:30px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#333;direction:ltr;gap:4px}
+.tools{display:flex;justify-content:space-between;direction:ltr;padding:0 6px;color:var(--blue)}
+.tools span{width:28px;height:28px;display:grid;place-items:center;border-radius:50%}
+.ring{outline:3px solid var(--hl);outline-offset:2px;border-radius:12px;animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{50%{outline-color:rgb(255 138 0 / .35)}}
+@media (prefers-reduced-motion:reduce){.ring{animation:none}}
+.finger{position:absolute;font-size:30px;z-index:4;filter:drop-shadow(0 2px 2px rgb(0 0 0 / .3))}
+/* share sheet */
+.sheet{position:absolute;inset:auto 0 0 0;height:74%;background:#f2f2f7;border-radius:16px 16px 0 0;box-shadow:0 -6px 20px rgb(0 0 0 / .18);padding:10px;display:flex;flex-direction:column;gap:8px}
+.grab{width:36px;height:4px;border-radius:2px;background:#c7c7cc;margin:0 auto}
+.shead{display:flex;align-items:center;gap:8px;background:#fff;border-radius:10px;padding:6px}
+.shead img{width:28px;border-radius:6px}
+.shead div{font-size:10px;line-height:1.3}
+.apps{display:flex;gap:8px;justify-content:center}
+.apps i{width:34px;height:34px;border-radius:9px;display:block}
+.list{background:#fff;border-radius:10px;overflow:hidden}
+.row{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;font-size:11px;border-top:1px solid #eee}
+.row:first-child{border-top:0}
+.row .ic{color:#333;font-size:13px}
+/* add dialog */
+.nav{display:flex;justify-content:space-between;align-items:center;padding:6px 12px;font-size:12px;background:#f7f7f9;border-bottom:1px solid #ddd}
+.nav .add{color:var(--blue);font-weight:700;padding:2px 8px}
+.nav .cancel{color:var(--blue)}
+.form{background:#fff;margin:12px;border-radius:10px;padding:10px;display:flex;gap:10px;align-items:center}
+.form img{width:44px;border-radius:10px}
+.form div{font-size:11px;line-height:1.5}
+.toggle{background:#fff;margin:0 12px;border-radius:10px;padding:8px 10px;display:flex;justify-content:space-between;align-items:center;font-size:11px}
+.sw{width:34px;height:20px;border-radius:10px;background:#34c759;position:relative}
+.sw::after{content:"";position:absolute;top:2px;left:16px;width:16px;height:16px;border-radius:50%;background:#fff}
+/* home */
+.home{flex:1;background:linear-gradient(160deg,#9fd3e6,#e8d9b5);display:grid;grid-template-columns:repeat(4,1fr);align-content:start;gap:14px 8px;padding:16px 12px}
+.app{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;color:#fff;text-shadow:0 1px 2px rgb(0 0 0 / .4)}
+.app i{width:40px;height:40px;border-radius:11px;display:block;background:rgb(255 255 255 / .55)}
+.app img{width:40px;height:40px;border-radius:11px;background:#FBF8F2}
+.app.me i,.app.me img{box-shadow:0 0 0 3px var(--hl)}
+.note{background:var(--gold-soft);border-radius:18px;padding:16px 18px;font-size:15px}
+.note b{color:var(--ink)}
+footer{text-align:center;color:var(--muted);font-size:14px}
+</style>
+</head><body>
+<div class="wrap">
+<header>
+ <img src="icons/apple-touch-icon.png" alt="شعار نراس">
+ <span class="wm">Neras</span>
+ <h1>تثبيت تطبيق نراس على الآيفون</h1>
+ <p>٤ خطوات بسيطة، بدون App Store وبدون أي اشتراك</p>
+ <span class="link">sydhmwd031-sys.github.io/neras-app</span>
+</header>
+
+<div class="steps">
+
+ <section class="step">
+  <span class="num">١</span><h2>افتح الرابط في Safari</h2>
+  <p>لازم يكون متصفح <b>Safari</b> (البوصلة الزرقاء)، مو Chrome ولا داخل الواتساب.</p>
+  <div class="phone"><div class="scr"><span class="island"></span><div class="status"></div>
+   <div class="page"><img src="icons/apple-touch-icon.png" alt=""><b>نراس</b><small>منصة نراس للتثقيف النفسي الأسري</small></div>
+   <div class="bar"><div class="url ring">🔒 sydhmwd031-sys.github.io</div>
+    <div class="tools"><span>‹</span><span>›</span><span>⬆︎</span><span>📖</span><span>⧉</span></div></div>
+  </div></div>
+ </section>
+
+ <section class="step">
+  <span class="num">٢</span><h2>اضغط زر المشاركة ⬆️</h2>
+  <p>المربع اللي فيه سهم لفوق، تحت في الوسط.<br>في الأجهزة الأحدث: اضغط <b>•••</b> أولاً ثم <b>مشاركة</b>.</p>
+  <div class="phone"><div class="scr"><span class="island"></span><div class="status"></div>
+   <div class="page"><img src="icons/apple-touch-icon.png" alt=""><b>نراس</b><small>منصة نراس للتثقيف النفسي الأسري</small></div>
+   <div class="bar"><div class="url">🔒 sydhmwd031-sys.github.io</div>
+    <div class="tools"><span>‹</span><span>›</span><span class="ring" style="border-radius:50%">⬆︎</span><span>📖</span><span>⧉</span></div></div>
+   <span class="finger" style="bottom:-4px;left:104px">👆</span>
+  </div></div>
+ </section>
+
+ <section class="step">
+  <span class="num">٣</span><h2>اختر «إضافة إلى الشاشة الرئيسية»</h2>
+  <p>انزل في القائمة شوي لين تلقاها، جنبها أيقونة <b>⊞</b>.</p>
+  <div class="phone"><div class="scr"><span class="island"></span><div class="status"></div>
+   <div class="page" style="opacity:.4"><img src="icons/apple-touch-icon.png" alt=""></div>
+   <div class="sheet"><span class="grab"></span>
+    <div class="shead"><img src="icons/apple-touch-icon.png" alt=""><div><b>نراس</b><br>sydhmwd031-sys.github.io</div></div>
+    <div class="apps"><i style="background:#34c759"></i><i style="background:#25d366"></i><i style="background:#0a84ff"></i><i style="background:#ff9500"></i></div>
+    <div class="list">
+     <div class="row"><span>نسخ</span><span class="ic">⧉</span></div>
+     <div class="row"><span>إضافة إلى قائمة القراءة</span><span class="ic">👓</span></div>
+     <div class="row"><span>إضافة إشارة مرجعية</span><span class="ic">📖</span></div>
+     <div class="row ring" style="background:#fff7ec"><span><b>إضافة إلى الشاشة الرئيسية</b></span><span class="ic">⊞</span></div>
+     <div class="row"><span>بحث في الصفحة</span><span class="ic">🔍</span></div>
+    </div>
+   </div>
+   <span class="finger" style="bottom:70px;left:16px">👆</span>
+  </div></div>
+ </section>
+
+ <section class="step">
+  <span class="num">٤</span><h2>اضغط «إضافة»</h2>
+  <p>الاسم بيطلع <b>نراس</b> لحاله. لو طلع خيار «فتح كتطبيق ويب» خلّه شغّال.</p>
+  <div class="phone"><div class="scr"><span class="island"></span><div class="status"></div>
+   <div class="nav"><span class="cancel">إلغاء</span><b>الشاشة الرئيسية</b><span class="add ring">إضافة</span></div>
+   <div class="form"><img src="icons/apple-touch-icon.png" alt=""><div><b>نراس</b><br><span style="color:#888">sydhmwd031-sys.github.io/neras-app</span></div></div>
+   <div class="toggle"><span>فتح كتطبيق ويب</span><span class="sw"></span></div>
+   <div style="flex:1;background:#f2f2f7"></div>
+   <span class="finger" style="top:74px;left:22px">👆</span>
+  </div></div>
+ </section>
+
+ <section class="step">
+  <span class="num">✓</span><h2>جاهز!</h2>
+  <p>أيقونة <b>نراس</b> صارت على الشاشة. افتحها مثل أي تطبيق، وتشتغل بدون إنترنت بعد أول مرة.</p>
+  <div class="phone"><div class="scr"><span class="island"></span><div class="status" style="background:#9fd3e6"></div>
+   <div class="home">
+    <span class="app"><i></i>الصور</span><span class="app"><i></i>الكاميرا</span><span class="app"><i></i>الرسائل</span><span class="app"><i></i>الساعة</span>
+    <span class="app"><i></i>الطقس</span><span class="app"><i></i>الخرائط</span><span class="app me"><img src="icons/apple-touch-icon.png" alt="">نراس</span><span class="app"><i></i>الإعدادات</span>
+   </div>
+  </div></div>
+ </section>
+
+</div>
+
+<div class="note"><b>نصيحة لوقت لعب الطفل:</b> عشان الطفل ما يطلع من التطبيق، فعّل <b>الوصول الموجّه</b>: الإعدادات ← تسهيلات الاستخدام ← الوصول الموجّه. بعدها افتح نراس واضغط الزر الجانبي ٣ مرات.</div>
+<footer>منصة نراس للتثقيف النفسي الأسري · 055 001 5146 · nerass.com</footer>
+</div>
+</body></html>
