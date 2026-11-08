@@ -5,6 +5,9 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   ipa:
     runs-on: macos-15
@@ -38,3 +41,13 @@ jobs:
         with:
           name: Neras-iPhone-IPA
           path: Neras-unsigned.ipa
+      - name: Publish download link
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: نراس - أحدث نسخة
+          body: |
+            📱 أندرويد: نزّل Neras.apk وثبّته.
+            🍎 آيفون: Neras-unsigned.ipa يحتاج توقيع (Sideloadly أو AltStore)، أو استخدم رابط التثبيت من Safari.
+          make_latest: true
+          files: Neras-unsigned.ipa
