@@ -1,0 +1,38 @@
+name: Android APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use the latest app page
+        run: |
+          python3 - <<'PY'
+          import re
+          s=open('web/index.html').read()
+          s=re.sub(r'<link rel="manifest".*?<meta name="theme-color"[^>]*>\n','',s,flags=re.S)
+          s=s.replace('<script>if("serviceWorker"','<script>if(false&&"serviceWorker"')
+          open('android/app/src/main/assets/index.html','w').write(s)
+          PY
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - name: Build APK
+        working-directory: android
+        run: gradle assembleRelease --no-daemon
+      - name: Rename
+        run: cp android/app/build/outputs/apk/release/*.apk Neras.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Neras-Android-APK
+          path: Neras.apk

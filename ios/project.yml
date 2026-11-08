@@ -1,0 +1,46 @@
+name: Neras
+options:
+  bundleIdPrefix: com.neras
+  deploymentTarget:
+    iOS: "15.0"
+  developmentLanguage: ar
+targets:
+  Neras:
+    type: application
+    platform: iOS
+    sources:
+      - path: Neras
+      - path: www
+        type: folder
+    info:
+      path: Neras/Info.plist
+      properties:
+        CFBundleDisplayName: نراس
+        CFBundleName: Neras
+        CFBundleShortVersionString: "1.5"
+        CFBundleVersion: "6"
+        CFBundleDevelopmentRegion: ar
+        UILaunchScreen: {}
+        UIRequiresFullScreen: true
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        UISupportedInterfaceOrientations~ipad: [UIInterfaceOrientationPortrait, UIInterfaceOrientationPortraitUpsideDown]
+        UIStatusBarStyle: UIStatusBarStyleDarkContent
+        ITSAppUsesNonExemptEncryption: false
+        LSApplicationQueriesSchemes: [whatsapp, tel, mailto]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.neras.app
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        TARGETED_DEVICE_FAMILY: "1,2"
+        SWIFT_VERSION: "5.0"
+        CODE_SIGN_STYLE: Automatic
+        GENERATE_INFOPLIST_FILE: NO
+schemes:
+  Neras:
+    build:
+      targets:
+        Neras: all
+    run:
+      config: Debug
+    archive:
+      config: Release

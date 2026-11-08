@@ -1,0 +1,40 @@
+name: iPhone IPA
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  ipa:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use the latest app page
+        run: |
+          python3 - <<'PY'
+          import re
+          s=open('web/index.html').read()
+          s=re.sub(r'<link rel="manifest".*?<meta name="theme-color"[^>]*>\n','',s,flags=re.S)
+          s=s.replace('<script>if("serviceWorker"','<script>if(false&&"serviceWorker"')
+          open('ios/www/index.html','w').write(s)
+          PY
+      - name: Generate Xcode project
+        run: |
+          brew install xcodegen
+          cd ios && xcodegen generate
+      - name: Build (unsigned)
+        working-directory: ios
+        run: |
+          xcodebuild -project Neras.xcodeproj -scheme Neras -configuration Release \
+            -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" build
+      - name: Package IPA
+        run: |
+          mkdir -p Payload
+          cp -R ios/build/Build/Products/Release-iphoneos/Neras.app Payload/
+          zip -qry Neras-unsigned.ipa Payload
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Neras-iPhone-IPA
+          path: Neras-unsigned.ipa
